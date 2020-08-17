@@ -38,6 +38,21 @@ public class Employee {
 		return getDailyWorkingHours()*HOURLY_WAGE;
 	}
 	
+	//Method to get Total Employee Wage, Conditions Applied
+	public int getTotalWage()
+	{
+		for(int day=1;day<=20;day++)
+		{
+			Total_Emp_Hrs+=getDailyWorkingHours();
+			getDailyWage();
+			Total_Monthly_Wage+=getDailyWage();
+			if(Total_Emp_Hrs>=100) {
+				break;
+			}	
+		}
+		return Total_Monthly_Wage;
+	}
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -50,12 +65,9 @@ public class Employee {
 		//System.out.println("Today's Employee Work Duration : "+emp.getDailyWorkingHours()+"hrs");
 		//System.out.println("Today's Employee Wage : " +emp.getDailyWage()+"Rs");
 		//Printing Total Wage after 20days
-		for(int day=1;day<=20;day++)
-		{
-			emp.getDailyWage();
-			Total_Monthly_Wage+=emp.getDailyWage();
-		}
-		System.out.println(Total_Monthly_Wage);
+		System.out.println(emp.getTotalWage());
+		System.out.println(Total_Emp_Hrs);
+		
 	}
 
 }
