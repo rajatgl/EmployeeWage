@@ -1,6 +1,6 @@
 
 public class Employee {
-	static final int HOURLY_WAGE=20;
+	static int HOURLY_WAGE=20;
 	
 	
 	static int Total_Emp_Hrs=0;
