@@ -1,73 +1,71 @@
-
 public class Employee {
 	static final int HOURLY_WAGE=20;
-	
-	
-	static int Total_Emp_Hrs=0;
-	static int Total_Monthly_Wage=0;
+	private int totalEmpHours = 0;
+	private int totalMonthlyWage = 0;
 	//Method For getting employee attendance
-	public boolean getEmployeeAttendance() 
+	public boolean getEmployeeAttendance()
 	{
-		int Is_Present=(int)((Math.random()*10)%2);
-		if(Is_Present==1)
-			return true;
-		else
-			return false;
+		return ((int)((Math.random()*10)%2)==1);
 	}
-	
 	//Method for getting daily working hours
 	public int getDailyWorkingHours()
 	{
-		int EmpHrs;
-		int Is_FullTime=(int)((Math.random()*10)%2);
+		int empHrs = 0;
+		int isFullTime=(int)((Math.random()*10)%2);
 		if(getEmployeeAttendance())
 		{
-			if(Is_FullTime==1)
-				EmpHrs=12; 
+			if(isFullTime==1)
+				empHrs=12;
 			else
-				EmpHrs=8;
+				empHrs=8;
 		}
-		else
-			EmpHrs=0;
-		return EmpHrs;
+		return empHrs;
 	}
-	
 	//Method to get employee's day's wage
-	public int getDailyWage()
+	public int getDailyWage(int hoursWorked)
 	{
-		return getDailyWorkingHours()*HOURLY_WAGE;
+		return hoursWorked*HOURLY_WAGE;
 	}
-	
 	//Method to get Total Employee Wage, Conditions Applied
 	public int getTotalWage()
 	{
+		int dayOfMonth = 1;
 		for(int day=1;day<=20;day++)
 		{
-			Total_Emp_Hrs+=getDailyWorkingHours();
-			getDailyWage();
-			Total_Monthly_Wage+=getDailyWage();
-			if(Total_Emp_Hrs>=100) {
+			int hoursWorked = getDailyWorkingHours();
+			if(hoursWorked == 0) {
+				day--;
+				continue;
+			}
+			//Handle corner case where employee hours slightly exceeds 100
+			if(totalEmpHours + hoursWorked>=100) {
+				hoursWorked = 100 - totalEmpHours;
+				totalEmpHours += hoursWorked;
+				totalMonthlyWage += getDailyWage(hoursWorked);
+				totalEmpHours = 100;
+				//Printing for Testing, Debugging and is verbose
+				System.out.println("Day of Month: " + dayOfMonth + ", Work Day: " + day + ", Hours Worked: " + hoursWorked);
 				break;
-			}	
+			}
+			//Printing for Testing, Debugging and is verbose
+			System.out.println("Day of Month: " + dayOfMonth + ", Work Day: " + day + ", Hours Worked: " + hoursWorked);
+			totalEmpHours += hoursWorked;
+			totalMonthlyWage += getDailyWage(hoursWorked);
+			dayOfMonth++;
+			if(dayOfMonth > 30)
+				break;
 		}
-		return Total_Monthly_Wage;
+		return totalMonthlyWage;
 	}
-	
-	
+	private int getTotalEmployeeHours() {
+		return totalEmpHours;
+	}
+	private int getTotalEmployeeMonthWage() {
+		return totalMonthlyWage;
+	}
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Employee emp=new Employee();
-		//System.out.print("Employee Attendance : ");
-		//if(emp.getEmployeeAttendance())
-		//	System.out.println("present");
-		//else
-		//	System.out.println("absent");
-		//System.out.println("Today's Employee Work Duration : "+emp.getDailyWorkingHours()+"hrs");
-		//System.out.println("Today's Employee Wage : " +emp.getDailyWage()+"Rs");
 		//Printing Total Wage after 20days
-		System.out.println(emp.getTotalWage());
-		System.out.println(Total_Emp_Hrs);
-		
+		System.out.println("Monthly Wage is: " + emp.getTotalWage() + ", Hours is: " + emp.getTotalEmployeeHours());
 	}
-
 }
